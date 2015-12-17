@@ -1,0 +1,138 @@
+<html>
+<head>
+  <!-- Angular Material style sheet -->
+  <link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/angular_material/1.0.0-rc5/angular-material.min.css">
+  <link rel="stylesheet" href="customss.css">
+
+</head>
+<body ng-app="hackathon">
+    
+<div ng-cloak>
+  <md-content>
+    <md-tabs  md-dynamic-height=true  md-border-bottom  md-swipe-content md-stretch-tabs flex>
+      <md-tab label="Avaliabilty" >
+        <md-content class="md-padding">
+    
+        <div ng-controller="availabilityCtrl">
+        
+        <md-radio-group ng-model="supportType">
+            <div flex layout='row' layout-padding layout-align="start center" >
+                <div flex style="max-width:300px;"> My app/infra is supported: </div>
+                <md-radio-button value="8760" class="md-primary" ng-click="resetValues()" >24x7</md-radio-button>
+                <md-radio-button value="2080" ng-click="resetValues()"> Business Days </md-radio-button>
+            </div>
+        </md-radio-group>
+        <md-divider></md-divider>
+        </br>
+        <div layout=row layout-align="start center">
+              <div flex="15">
+                <span class="md-title">Scheduled Downtime</span>
+              </div>
+              <md-slider flex="60" min="0" max="{{supportType * 0.1}}" ng-model="downtime" aria-label="downtime" id="downtime-slider" class="md-accent"  md-hue-1>
+              </md-slider>
+              <div >
+                <input flex=30 type="number" ng-model="downtime" aria-label="downtime" aria-controls="downtime-slider">
+              </div>
+        </div>
+        </br>
+        <div layout=row layout-align="start center">
+              <div flex="15">
+                <span class="md-title">Number of P1</span>
+              </div>
+              <md-slider flex="60" min="0" max="100" ng-model="P1" aria-label="P1" id="P1-slider" class="md-accent" md-hue-1>
+              </md-slider>
+              <div >
+                <input flex=30 type="number" ng-model="P1" aria-label="P1" aria-controls="P1-slider">
+              </div>
+        </div>
+        </br>
+        <div layout=row layout-align="start center">
+              <div flex="15">
+                <span class="md-title">SLA P1 Recovery </span>
+              </div>
+              <md-slider flex="60" min="0" max="10" ng-model="SLA" aria-label="SLA" id="SLA-slider" class="md-accent" md-hue-1 >
+              </md-slider>
+              <div >
+                <input flex=30 type="number" ng-model="SLA" aria-label="SLA" aria-controls="SLA-slider">
+              </div>
+         </div>
+        <md-divider></md-divider>
+        <div flex layout='column' layout-padding layout-align="center center" >
+            <div flex > Your availablity: {{(supportType-downtime-(P1*SLA))*100/(supportType-downtime) | number:3}} % </div>
+        </div>
+        </div>
+        
+     </md-content>
+      </md-tab>
+        <md-tab label="P1 SLA" 
+        <md-content class="md-padding">
+        <div ng-controller="SLACtrl">
+        
+        <md-radio-group ng-model="supportType">
+            <div flex layout='row' layout-padding layout-align="start center" >
+                <div flex style="max-width:300px;"> My app/infra is supported: </div>
+                <md-radio-button value="8760" class="md-primary" ng-click="resetValues()" >24x7</md-radio-button>
+                <md-radio-button value="2080" ng-click="resetValues()"> Business Days </md-radio-button>
+            </div>
+        </md-radio-group>
+        <md-divider></md-divider>
+        </br>
+        <div layout=row layout-align="start center">
+              <div flex="15">
+                <span class="md-title">Scheduled Downtime</span>
+              </div>
+              <md-slider flex="60" min="0" max="{{supportType * 0.1}}" ng-model="downtime" aria-label="downtime" id="downtime-slider" class="md-accent"  md-hue-1>
+              </md-slider>
+              <div >
+                <input flex=30 type="number" ng-model="downtime" aria-label="downtime" aria-controls="downtime-slider">
+              </div>
+        </div>
+        </br>
+        <div layout=row layout-align="start center">
+              <div flex="15">
+                <span class="md-title">Number of P1</span>
+              </div>
+              <md-slider flex="60" min="0" max="100" ng-model="P1" aria-label="P1" id="P1-slider" class="md-accent" md-hue-1>
+              </md-slider>
+              <div >
+                <input flex=30 type="number" ng-model="P1" aria-label="P1" aria-controls="P1-slider">
+              </div>
+        </div>
+        </br>
+        <div layout=row layout-align="start center">
+              <div flex="15">
+                <span class="md-title">Target Availablity</span>
+              </div>
+              <md-slider flex="60" min="90" max="100" step="0.01" ng-model="availablityPercentage" aria-label="availablityPercentage" id="availablityPercentage-slider" class="md-accent" md-hue-1 >
+              </md-slider>
+              <div >
+                <input flex=30 type="number" ng-model="availablityPercentage" aria-label="availablityPercentage" aria-controls="availablityPercentage-slider">
+              </div>
+         </div>
+        <md-divider></md-divider>
+        <div flex layout='column' layout-padding layout-align="center center" >
+            
+            <div flex > Your target SLA: {{((supportType-downtime) - (availablityPercentage/100 *(supportType-downtime)) )/P1 | number:1}} hours</div>
+        </div>
+        </div>
+       </md-content>
+      </md-tab>
+      </md-tabs>
+    </md-content>
+    </div>
+    
+  <!-- Angular.js Libraries for Angular Material -->
+  <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+  <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-animate.min.js"></script>
+  <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-aria.min.js"></script>
+  <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-messages.min.js"></script>
+
+  <!-- Angular Material Library -->
+  <script src="http://ajax.googleapis.com/ajax/libs/angular_material/1.0.0-rc7/angular-material.min.js"></script>
+  
+  <!-- Application bootstrap  -->
+  <script src="javaScripts.js"></script>  
+
+
+</body>
+</html>
